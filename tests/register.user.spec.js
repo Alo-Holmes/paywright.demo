@@ -1,64 +1,72 @@
 import {test, expect} from '@playwright/test';
 
+// I need to add logic randomize the username and email on each run through of the test 
+
+
 test.beforeEach( async ({ page }) => {
  await page.goto ('https://automationexercise.com/')
 });
 
  test('register a new user', async ({ page }) => {
-    
-  // STEP 1
-    await page.getByRole('link', { name: ' Signup / Login' }).click();
-    await page.getByPlaceholder('Name').isVisible();
-    await page.getByPlaceholder('Name').click();
+   
+ 
+  await page.getByRole('link', { name: ' Signup / Login' }).click();
+  await page.getByRole('heading', { name: 'New User Signup!' }).click();
+  await page.getByPlaceholder('Name').isVisible();
+  await page.getByPlaceholder('Name').fill('automation@test.za');
+  await page.getByPlaceholder('Name').press('Tab');
+  await page.getByPlaceholder('Name').click({
+    clickCount: 3
+  });
+  await page.getByPlaceholder('Name').press('Control+a');
+  await page.getByPlaceholder('Name').press('Control+x');
+  await page.locator('form').filter({ hasText: 'Signup' }).getByPlaceholder('Email Address').isVisible();
+  await page.locator('form').filter({ hasText: 'Signup' }).getByPlaceholder('Email Address').fill('automation@test.za');
+  await page.getByPlaceholder('Name').isVisible();
+  await page.getByPlaceholder('Name').fill('John Tester');
+  await page.getByRole('button', { name: 'Signup' }).click();
+  await page.getByLabel('Mr.').isVisible();
+  await page.getByLabel('Mr.').check();
+  await page.getByLabel('Password *').isVisible();
+  await page.getByLabel('Password *').fill('Test123');
+  await page.locator('#days').isVisible();
+  await page.locator('#days').selectOption('10');
+  await page.locator('#months').isVisible();
+  await page.locator('#months').selectOption('3');
+  await page.locator('#years').isVisible();
+  await page.locator('#years').selectOption('2003');
+  await page.getByText('Address Information').isVisible();
+  await page.getByLabel('First name *').isVisible();
+  await page.getByLabel('First name *').fill('John');
+  await page.getByLabel('First name *').press('Tab');
+  await page.getByLabel('Last name *').fill('Tester');
+  await page.getByLabel('Last name *').press('Tab');
+  await page.getByLabel('Company', { exact: true }).fill('Test');
+  await page.getByLabel('Company', { exact: true }).press('Tab');
+  await page.getByLabel('Address * (Street address, P.O. Box, Company name, etc.)').fill('Test street');
+  await page.getByLabel('Address 2').isVisible();
+  await page.getByLabel('Address 2').fill('Test province');
+  await page.getByLabel('Country *').selectOption('Singapore');
+  await page.getByLabel('State *').isVisible();
+  await page.getByLabel('State *').fill('Test state');
+  await page.getByLabel('City *').isVisible();
+  await page.getByLabel('City *').fill('Test City');
+  await page.getByLabel('City *').press('Tab');
+  await page.locator('#zipcode').fill('Test zip');
+  await page.getByLabel('Mobile Number *').isVisible();
+  await page.getByLabel('Mobile Number *').fill('000 555 0123');
+  await page.getByRole('button', { name: 'Create Account' }).click();
+  await page.getByText('Account Created!').isVisible();
+  await page.getByRole('link', { name: 'Continue' }).click();
+  //await page.frameLocator('iframe[name="aswift_3"]').getByLabel('Close ad').click();
+  await page.getByText('Logged in as John Tester').isVisible();
+  await page.getByRole('link', { name: ' Delete Account' }).click();
+  await page.getByText('Account Deleted!').isVisible();
+  //await page.getByRole('link', { name: 'Continue' }).click();
   
-    await page.getByPlaceholder('Name').click();
-    await page.getByPlaceholder('Name').fill('Auto Bots');
-
-    await page.locator('form').filter({ hasText: 'Signup' }).getByPlaceholder('Email Address').fill('auto.bots@test.com');
-    await page.locator('form').filter({ hasText: 'Signup' }).getByPlaceholder('Email Address').press('Tab');
-    await page.getByRole('button', { name: 'Signup' }).click();
-
-  // STEP 2 
-    await page.getByLabel('Mr.').check();
-    await page.getByLabel('Password *').click();
-    await page.getByLabel('Password *').fill('Test123');
-    await page.locator('#months').selectOption('9');
-    await page.locator('#years').selectOption('2003');
-    await page.getByLabel('First name *').click();
-    await page.getByLabel('First name *').fill('Auto');
-    await page.getByLabel('First name *').press('Tab');
-    await page.getByLabel('Last name *').fill('Bots');
-    await page.getByLabel('Company', { exact: true }).click();
-    await page.getByLabel('Company', { exact: true }).fill('Transformers Corp.');
-    await page.getByLabel('Company', { exact: true }).press('Tab');
-    await page.getByLabel('Address * (Street address, P.O. Box, Company name, etc.)').fill('Dark side of the moon');
-    await page.getByLabel('Address * (Street address, P.O. Box, Company name, etc.)').press('Tab');
-    await page.getByLabel('Address * (Street address, P.O. Box, Company name, etc.)').click({
-      modifiers: ['Shift']
     });
 
-    // Step 3
-    await page.getByLabel('Address * (Street address, P.O. Box, Company name, etc.)').isVisible;
-    // await page.getByLabel('Address 2').click();
-    await page.getByLabel('Address 2').fill('Anothert galaxy');
-    // await page.getByLabel('Address 2').press('Tab');
-    await page.getByLabel('Country *').selectOption('United States');
-    // await page.getByLabel('State *').click();
-    await page.getByLabel('State *').fill('California');
-    // await page.getByLabel('State *').press('Tab');
-    await page.getByLabel('City *').fill('Los Angeles');
-    // await page.getByLabel('City *').press('Tab');
-    // await page.locator('#zipcode').press('Tab');
-    // await page.locator('#zipcode').click();
-    await page.locator('#zipcode').fill('n/a');
-    // await page.locator('#zipcode').press('Tab');
-    await page.getByLabel('Mobile Number *').fill('000 555 0911');
-    await page.goto('https://automationexercise.com/account_created');
-    await page.getByText('Account Created! Congratulations! Your new account has been successfully created').isVisible();
-    await page.getByRole('link', { name: 'Continue' }).click();
-    // await page.getByText('Account Created!').click({
-    //   button: 'right'
-    });
+  
   
     
   
